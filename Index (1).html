@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>چالش ۶۰ ثانیه</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:Tahoma,Arial,sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(circle at 15% 15%,#ffbd32 0,transparent 28%),
+    radial-gradient(circle at 85% 85%,#ff2600 0,transparent 35%),
+    linear-gradient(135deg,#ff8500,#ff3b00);
+}
+
+body:before,
+body:after{
+  content:"";
+  position:fixed;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  filter:blur(3px);
+  pointer-events:none;
+}
+
+body:before{
+  width:400px;
+  height:400px;
+  top:-180px;
+  left:-150px;
+  animation:float1 7s infinite alternate ease-in-out;
+}
+
+body:after{
+  width:330px;
+  height:330px;
+  bottom:-150px;
+  right:-100px;
+  animation:float2 8s infinite alternate ease-in-out;
+}
+
+@keyframes float1{
+  to{transform:translate(90px,80px)}
+}
+
+@keyframes float2{
+  to{transform:translate(-70px,-60px)}
+}
+
+.container{
+  width:min(92%,430px);
+  position:relative;
+  z-index:5;
+}
+
+.card{
+  padding:30px 24px;
+  text-align:center;
+  border-radius:30px;
+  background:rgba(15,15,15,.75);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 25px 70px rgba(0,0,0,.4);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  animation:show .7s ease;
+}
+
+@keyframes show{
+  from{
+    opacity:0;
+    transform:translateY(30px) scale(.95);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.logo{
+  font-size:55px;
+  margin-bottom:8px;
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  50%{transform:scale(1.1)}
+}
+
+h1{
+  font-size:28px;
+  margin-bottom:12px;
+}
+
+.subtitle{
+  color:#ddd;
+  line-height:2;
+  font-size:14px;
+  margin-bottom:20px;
+}
+
+.name{
+  display:inline-block;
+  padding:9px 20px;
+  margin-bottom:24px;
+  border-radius:50px;
+  font-weight:bold;
+  background:linear-gradient(90deg,#ffb300,#ff5100);
+  box-shadow:0 6px 22px rgba(255,100,0,.35);
+}
+
+.buttons{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+button{
+  width:100%;
+  padding:16px;
+  border:0;
+  border-radius:17px;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:active{
+  transform:scale(.95);
+}
+
+.start{
+  background:linear-gradient(135deg,#ffb000,#ff3d00);
+  box-shadow:0 8px 25px rgba(255,70,0,.35);
+}
+
+.no{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+button:hover{
+  transform:translateY(-2px);
+}
+
+.hidden{
+  display:none!important;
+}
+
+.challenge-title{
+  font-size:21px;
+  margin-bottom:8px;
+}
+
+.warning{
+  color:#ffbd32;
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+.timer{
+  font-size:82px;
+  font-weight:900;
+  line-height:1.1;
+  margin:10px 0;
+  text-shadow:0 0 30px rgba(255,120,0,.6);
+}
+
+.timer.danger{
+  color:#ff3030;
+  animation:danger .45s infinite alternate;
+}
+
+@keyframes danger{
+  to{
+    transform:scale(1.08);
+  }
+}
+
+.progress{
+  width:100%;
+  height:11px;
+  margin:20px 0;
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(255,255,255,.12);
+}
+
+.progress-bar{
+  width:100%;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,#ffe000,#ff3b00);
+  transition:width 1s linear;
+}
+
+.message{
+  color:#ddd;
+  font-size:14px;
+  line-height:1.8;
+}
+
+.result{
+  animation:result .7s ease;
+}
+
+@keyframes result{
+  from{
+    opacity:0;
+    transform:scale(.5) rotate(-5deg);
+  }
+  to{
+    opacity:1;
+    transform:scale(1) rotate(0);
+  }
+}
+
+.big-emoji{
+  font-size:90px;
+  margin:15px 0;
+  animation:shake .35s infinite alternate;
+}
+
+@keyframes shake{
+  from{transform:rotate(-7deg)}
+  to{transform:rotate(7deg)}
+}
+
+.result h2{
+  font-size:30px;
+  margin-bottom:10px;
+}
+
+.restart{
+  margin-top:20px;
+  background:rgba(255,255,255,.1);
+}
+
+.footer{
+  margin-top:18px;
+  color:rgba(255,255,255,.5);
+  font-size:11px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- صفحه شروع -->
+  <div class="card" id="home">
+
+    <div class="logo">😈</div>
+
+    <h1>چالش ۶۰ ثانیه</h1>
+
+    <p class="subtitle">
+      جرأت داری وارد چالش بشی؟<br>
+      فقط ۶۰ ثانیه تکون نخور!
+    </p>
+
+    <div class="name">
+      مهدی جهان
+    </div>
+
+    <div class="buttons">
+      <button class="start" onclick="startGame()">
+        🔥 شروع کن
+      </button>
+
+      <button class="no" onclick="dontStart()">
+        😎 شروع نکن
+      </button>
+    </div>
+
+    <div class="footer">
+      ساخته شده برای شوخی و سرگرمی 😂
+    </div>
+
+  </div>
+
+
+  <!-- صفحه تایمر -->
+  <div class="card hidden" id="game">
+
+    <div class="logo">🤫</div>
+
+    <div class="challenge-title">
+      مهدی جهان
+    </div>
+
+    <div class="warning">
+      اگه تکون بخوری گی هستی 😈
+    </div>
+
+    <div class="timer" id="timer">
+      60
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+
+    <div class="message">
+      فقط مونده تکون نخوری...<br>
+      طاقت بیار! 😂
+    </div>
+
+  </div>
+
+
+  <!-- صفحه پایان -->
+  <div class="card hidden" id="result">
+
+    <div class="result">
+
+      <div class="big-emoji">
+        🖕
+      </div>
+
+      <h2>
+        گی بودی 😂
+      </h2>
+
+      <p class="message">
+        چالش تموم شد!<br>
+        ممنون که شرکت کردی 😈🔥
+      </p>
+
+      <button class="restart" onclick="restartGame()">
+        🔄 دوباره بازی کن
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let time = 60;
+let timerInterval = null;
+
+
+/* شروع بازی */
+function startGame(){
+
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+
+  time = 60;
+
+  const timer = document.getElementById("timer");
+  const progress = document.getElementById("progress");
+
+  timer.textContent = time;
+  timer.classList.remove("danger");
+  progress.style.width = "100%";
+
+  clearInterval(timerInterval);
+
+  timerInterval = setInterval(function(){
+
+    time--;
+
+    timer.textContent = time;
+
+    progress.style.width = ((time / 60) * 100) + "%";
+
+
+    /* هشدار 10 ثانیه آخر */
+    if(time <= 10){
+
+      timer.classList.add("danger");
+
+      if(time > 0){
+        beep();
+      }
+
+    }
+
+
+    /* پایان */
+    if(time <= 0){
+
+      clearInterval(timerInterval);
+
+      setTimeout(function(){
+
+        document.getElementById("game").classList.add("hidden");
+        document.getElementById("result").classList.remove("hidden");
+
+      },500);
+
+    }
+
+  },1000);
+}
+
+
+/* اگر شروع نکنه */
+function dontStart(){
+
+  const button = document.querySelector(".no");
+
+  button.textContent = "😂 ترسیدی؟";
+
+  setTimeout(function(){
+
+    button.textContent = "😎 شروع نکن";
+
+  },1500);
+}
+
+
+/* صدای هشدار */
+function beep(){
+
+  try{
+
+    const audioContext =
+      new (window.AudioContext || window.webkitAudioContext)();
+
+    const oscillator =
+      audioContext.createOscillator();
+
+    const gain =
+      audioContext.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.frequency.value = 700;
+    oscillator.type = "sine";
+
+    gain.gain.setValueAtTime(
+      0.08,
+      audioContext.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      audioContext.currentTime + 0.15
+    );
+
+    oscillator.start();
+
+    oscillator.stop(
+      audioContext.currentTime + 0.15
+    );
+
+  }catch(e){
+
+    /* اگر مرورگر صدا را پشتیبانی نکرد، مشکلی نیست */
+
+  }
+
+}
+
+
+/* دوباره بازی */
+function restartGame(){
+
+  clearInterval(timerInterval);
+
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
+
+}
+
+
+/* جلوگیری از اسکرول ناخواسته */
+document.addEventListener(
+  "touchmove",
+  function(e){
+    e.preventDefault();
+  },
+  {passive:false}
+);
+
+</script>
+
+</body>
+</html>
